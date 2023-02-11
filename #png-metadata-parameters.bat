@@ -17,7 +17,7 @@ GOTO loop
 :do
 powershell -Command ^
 " ^
-$c=52; ^
+$u=52; ^
 $b=@(0x70,0x61,0x72,0x61,0x6D,0x65,0x74,0x65,0x72,0x73,0x00); ^
 $args=@(%_ARGS%); ^
 Function Get-Bytes($f,$n){ ^
@@ -33,9 +33,9 @@ for($g=0;$g -lt $args.Length;++$g){ ^
 	$a=$args[$g]; ^
 	Write-Host -ForeGroundColor Yellow ('[{0}] {1}' -f ($g+1),$a); ^
 	$d=@(); ^
-	$d=Get-Bytes $a $c; ^
+	$d=Get-Bytes $a $u; ^
 	$k=-1; ^
-	$e=$c-$b.Length+1; ^
+	$e=$u-$b.Length+1; ^
 	:outer for($i=0;$i -lt $e;++$i){ ^
 		if($d[$i] -ne $b[0]){ ^
 			continue; ^
@@ -68,12 +68,12 @@ for($g=0;$g -lt $args.Length;++$g){ ^
 			Write-Host -ForegroundColor Red $Matches[3].Trim(); ^
 			Write-Host -ForeGround Cyan $Matches[5]; ^
 			$q++; ^
-		}else{ ^
-			$r++; ^
-			Write-Host parameter cannot be found in $c bytes of file; ^
 		} ^
-		Write-Host; ^
+	}else{ ^
+		$r++; ^
+		Write-Host parameter cannot be found in $u bytes of file; ^
 	} ^
+	Write-Host; ^
 } ^
 if($args.Length -gt 1){ ^
 	Write-Host (\"All: {0} / Success: {1} / Failed: {2}`n\" -f $args.Length,$q,$r); ^
