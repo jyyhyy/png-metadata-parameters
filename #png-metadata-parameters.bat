@@ -1,4 +1,4 @@
-@REM v0.4
+@REM v0.5
 
 @ECHO OFF
 ECHO.
@@ -27,16 +27,10 @@ Function Get-Bytes($f,$n){ ^
 		return Get-Content $f -AsByteStream -TotalCount $n; ^
 	} ^
 } ^
-$q=0; ^
-$r=0; ^
-for($g=0;$g -lt $args.Length;++$g){ ^
-	$a=$args[$g]; ^
-	Write-Host -ForeGroundColor Yellow ('[{0}] {1}' -f ($g+1),$a); ^
-	$d=@(); ^
-	$d=Get-Bytes $a $u; ^
+Function Find-Bytes($d,$b,$v=0){ ^
 	$k=-1; ^
-	$e=$u-$b.Length+1; ^
-	:outer for($i=0;$i -lt $e;++$i){ ^
+	$e=$d.Length-$b.Length+1; ^
+	:outer for($i=$v;$i -lt $e;++$i){ ^
 		if($d[$i] -ne $b[0]){ ^
 			continue; ^
 		} ^
@@ -48,6 +42,20 @@ for($g=0;$g -lt $args.Length;++$g){ ^
 		} ^
 		$k=$i-4; ^
 		break; ^
+	} ^
+	return $k; ^
+} ^
+$q=0; ^
+$r=0; ^
+for($g=0;$g -lt $args.Length;++$g){ ^
+	$a=$args[$g]; ^
+	Write-Host -ForeGroundColor Yellow ('[{0}] {1}' -f ($g+1),$a); ^
+	$d=@(); ^
+	$d=Get-Bytes $a $u; ^
+	$k=Find-Bytes $d $b; ^
+	if($k -eq -1) { ^
+		$d=[IO.File]::ReadAllBytes($a); ^
+		$k=Find-Bytes $d $b $u; ^
 	} ^
 	if($k -ge 0){ ^
 		$t=[Text.Encoding]::ASCII.GetString($d[($k)..($k+3)]); ^
